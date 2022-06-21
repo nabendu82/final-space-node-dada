@@ -1,24 +1,37 @@
 const express = require('express');
-
+const path = require('path');
+const hbs = require('hbs');
 const app = express();
+const port = process.env.PORT || 3000;
+const publicDir = path.join(__dirname, './public');
+const viewsDir = path.join(__dirname, './templates/views');
+const partialDir = path.join(__dirname, './templates/partials');
+
+app.set('view engine', 'hbs');
+app.set('views', viewsDir);
+hbs.registerPartials(partialDir);
+app.use(express.static(publicDir));
 
 app.get('', (req, res) => {
-    res.send({
+    res.render('index', {
         title: 'Final Space',
-        name: 'Final Space Site'
+        name: 'Nabendu Biswas'
     })
 })
 
 app.get('/about',(req, res) => {
-    res.send('Welcome to express')
-})
-
-app.get('/help', (req, res) => {
-    res.send({
-        helpText: 'This is some helpful text',
-        title: 'Help',
-        name: 'Final Space Site'
+    res.render('about', {
+        title: 'About Me',
+        name: 'Nabendu Biswas'
     })
 })
 
-app.listen(8080, () => console.log('Server is up on port 8080'))
+app.get('/help', (req, res) => {
+    res.render('help', {
+        helpText: 'This is some helpful text',
+        title: 'Help',
+        name: 'Nabendu Biswas'
+    })
+})
+
+app.listen(port, () => console.log(`Server is up on port ${port}`));
